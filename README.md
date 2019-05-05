@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.com/parj/SampleSpringBootApp.svg?branch=master)](https://travis-ci.com/parj/SampleSpringBootApp)
-
-[![CircleCI](https://circleci.com/gh/parj/SampleSpringBootApp.svg?style=svg)](https://circleci.com/gh/parj/SampleSpringBootApp)
+[![Build Status](https://travis-ci.com/parj/SampleSpringBootApp.svg?branch=master)](https://travis-ci.com/parj/SampleSpringBootApp)  [![CircleCI](https://circleci.com/gh/parj/SampleSpringBootApp.svg?style=svg)](https://circleci.com/gh/parj/SampleSpringBootApp)
 
 [![DepShield Badge](https://depshield.sonatype.org/badges/parj/SampleSpringBootApp/depshield.svg)](https://depshield.github.io)
 
