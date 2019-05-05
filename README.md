@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.com/parj/SampleSpringBootApp.svg?branch=master)](https://travis-ci.com/parj/SampleSpringBootApp)
 
+[![CircleCI](https://circleci.com/gh/parj/SampleSpringBootApp.svg?style=svg)](https://circleci.com/gh/parj/SampleSpringBootApp)
+
 [![DepShield Badge](https://depshield.sonatype.org/badges/parj/SampleSpringBootApp/depshield.svg)](https://depshield.github.io)
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fparj%2FSampleSpringBootApp.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fparj%2FSampleSpringBootApp?ref=badge_large)
