@@ -54,6 +54,10 @@
         <configuration>
           <imageName>samplespringbootapp</imageName>
           <baseImage>gcr.io/distroless/java:8</baseImage>
+          <imageTags>
+            <imageTag>${project.version}</imageTag>
+            <imageTag>latest</imageTag>
+          </imageTags>
           <entryPoint>["java", "-jar", "/usr/app/${project.build.finalName}.jar"]</entryPoint>
           <forceTags>true</forceTags>
           <resources>

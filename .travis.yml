@@ -1,8 +1,5 @@
 language: java
 
-services:
-  - docker
-
 jdk:
   - openjdk8
   - openjdk11
@@ -25,6 +22,7 @@ jobs:
         - mvn coveralls:report
     - stage: "Build and push docker image"
       jdk: openjdk11
+      services: docker
       script: mvn package docker:build -DskipTests
       after_script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
