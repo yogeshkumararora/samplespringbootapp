@@ -5,7 +5,9 @@ jdk:
   - oraclejdk11
   - openjdk11
   - openjdk12
-script: "mvn test"
+script: "mvn test jacoco:report"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - mvn coveralls:report
+  
