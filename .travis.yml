@@ -1,4 +1,8 @@
 language: java
+
+services:
+  - docker
+
 jdk:
   - openjdk8
   - openjdk11
@@ -8,4 +12,8 @@ script: "mvn test jacoco:report"
 after_success:
   - bash <(curl -s https://codecov.io/bash)
   - mvn coveralls:report
+  - mvn docker:build
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker tag samplespringbootapp $DOCKER_USERNAME/samplespringbootapp
+  - docker push $DOCKER_USERNAME/samplespringbootapp
   
