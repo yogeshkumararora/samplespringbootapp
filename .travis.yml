@@ -8,6 +8,11 @@ jdk:
   - openjdk11
   - openjdk12
 
+cache:
+  directories:
+  - .autoconf
+  - $HOME/.m2
+
 script: "mvn verify"
 
 jobs:
