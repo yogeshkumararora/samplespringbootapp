@@ -9,17 +9,27 @@ cache:
   directories:
     - .autoconf
     - $HOME/.m2
+    - $HOME/.cache
+
+deploy:
+  provider: script
+  script: "cp .travis.settings.xml $HOME/.m2/settings.xml"
+  skip_cleanup: true
+  on:
+    tags: true
 
 script: "mvn verify"
 
 jobs:
   include:
-    - stage: "Tests and upload codecov, coveralls"     
+    - stage: "Tests and upload snapshot codecov, coveralls"     
       jdk: openjdk11
       script: "mvn test jacoco:report"
       after_script:
         - bash <(curl -s https://codecov.io/bash)
         - mvn coveralls:report
+        - mvn deploy
+        
     - stage: "Build and push docker image"
       jdk: openjdk11
       services: docker
@@ -28,7 +38,7 @@ jobs:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker push $DOCKER_USERNAME/samplespringbootapp:1.0-SNAPSHOT
         - docker push $DOCKER_USERNAME/samplespringbootapp:latest
-        - echo "$DOCKER_BINTRAY_API" | docker login -u parj --password-stdin parj-docker-public-docker.bintray.io
+        - echo "$DOCKER_BINTRAY_API" | docker login -u "$DOCKER_BINTRAY_USER" --password-stdin parj-docker-public-docker.bintray.io
         - docker tag $DOCKER_USERNAME/samplespringbootapp:1.0-SNAPSHOT parj-docker-public-docker.bintray.io/samplespringbootapp:1.0-SNAPSHOT
         - docker tag $DOCKER_USERNAME/samplespringbootapp:latest parj-docker-public-docker.bintray.io/samplespringbootapp:latest
         - docker push parj-docker-public-docker.bintray.io/samplespringbootapp:1.0-SNAPSHOT

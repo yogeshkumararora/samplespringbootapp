@@ -8,6 +8,19 @@
   <name>samplespringbootapp</name>
   <url>https://github.com/parj/SampleSpringBootApp</url>
 
+  <distributionManagement>
+    <snapshotRepository>
+      <id>bintray-snapshots</id>
+      <url>https://dl.bintray.com/parj/maven-snapshots</url>
+      <layout>default</layout>
+    </snapshotRepository>
+    <repository>
+      <id>bintray-release</id>
+      <url>https://dl.bintray.com/parj/maven</url>
+      <layout>default</layout>
+    </repository>
+  </distributionManagement>
+
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
