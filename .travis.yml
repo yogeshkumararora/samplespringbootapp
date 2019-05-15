@@ -26,6 +26,10 @@ jobs:
       script: mvn package docker:build -DskipTests
       after_script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker tag samplespringbootapp $DOCKER_USERNAME/samplespringbootapp
-        - docker push $DOCKER_USERNAME/samplespringbootapp
-  
+        - docker push $DOCKER_USERNAME/samplespringbootapp:1.0-SNAPSHOT
+        - docker push $DOCKER_USERNAME/samplespringbootapp:latest
+        - echo "$DOCKER_BINTRAY_API" | docker login -u parj --password-stdin parj-docker-public-docker.bintray.io
+        - docker tag $DOCKER_USERNAME/samplespringbootapp:1.0-SNAPSHOT parj-docker-public-docker.bintray.io/samplespringbootapp:1.0-SNAPSHOT
+        - docker tag $DOCKER_USERNAME/samplespringbootapp:latest parj-docker-public-docker.bintray.io/samplespringbootapp:latest
+        - docker push parj-docker-public-docker.bintray.io/samplespringbootapp:1.0-SNAPSHOT
+        - docker push parj-docker-public-docker.bintray.io/samplespringbootapp:latest
