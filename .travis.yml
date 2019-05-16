@@ -31,7 +31,7 @@ jobs:
 
     - stage: "Deploy to ossrh"
       jdk: openjdk11
-      script: "mvn deploy -DskipTests"
+      script: "cat $HOME/.m2/settings.xml && mvn deploy -DskipTests"
         
     - stage: "Build and push docker image"
       jdk: openjdk11

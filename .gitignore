@@ -12,3 +12,6 @@ target/
 
 .DS_Store
 *.jar
+
+.gradle/
+build/
