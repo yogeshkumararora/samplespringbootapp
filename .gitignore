@@ -1,8 +1,14 @@
 target/
 .vscode/
 .settings/
+.idea/
+
 .classpath
 .project
+
+*.iml
+*.ipr
+*.iws
 
 .DS_Store
 *.jar

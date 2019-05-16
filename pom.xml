@@ -1,23 +1,35 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>github.parj</groupId>
+  <groupId>io.github.parj</groupId>
   <artifactId>samplespringbootapp</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>samplespringbootapp</name>
   <url>https://github.com/parj/SampleSpringBootApp</url>
 
+  <licenses>
+    <license>
+      <name>MIT license</name>
+      <url>https://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <url>https://github.com/parj/AddOnJavaAntTasks</url>
+    <connection>scm:git:https://github.com/parj/AddOnJavaAntTasks.git</connection>
+    <developerConnection>scm:git:https://github.com/parj/AddOnJavaAntTasks.git</developerConnection>
+  </scm>
+
+
   <distributionManagement>
     <snapshotRepository>
-      <id>bintray-snapshots</id>
-      <url>https://dl.bintray.com/parj/maven-snapshots</url>
-      <layout>default</layout>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
     <repository>
-      <id>bintray-release</id>
-      <url>https://dl.bintray.com/parj/maven</url>
-      <layout>default</layout>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
 
@@ -139,6 +151,18 @@
                   <version>2.2.3</version>
               </dependency>
           </dependencies>
+      </plugin>
+
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.8</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
       </plugin>
     </plugins>
   </build>

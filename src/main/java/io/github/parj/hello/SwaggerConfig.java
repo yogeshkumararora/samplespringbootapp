@@ -1,4 +1,4 @@
-package github.parj.hello;
+package io.github.parj.hello;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

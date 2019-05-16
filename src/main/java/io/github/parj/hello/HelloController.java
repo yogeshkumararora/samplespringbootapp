@@ -1,4 +1,4 @@
-package github.parj.hello;
+package io.github.parj.hello;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
