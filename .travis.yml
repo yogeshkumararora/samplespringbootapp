@@ -20,18 +20,7 @@ jobs:
       jdk: openjdk11
       deploy:
         provider: script
-        script: cp .travis.settings.xml $HOME/.m2/settings.xml &&
-          if [[ $TRAVIS_BRANCH == "release" ]]; then
-            echo "Release build";
-            export TRAVIS_TAG="1.$TRAVIS_BUILD_NUMBER";
-            git config --local user.name "Parjanya Mudunuri";
-            git config --local user.email "parjanya@gmail.com";
-            git tag "$TRAVIS_TAG" "$TRAVIS_COMMIT";
-            mvn release:clean release:prepare -DdryRun=true;
-          else
-            echo "Snapshot build";
-            mvn deploy -DskipTests;
-          fi
+        script: .travis/build.sh
         skip_cleanup: true
 
     - stage: "Tests and upload snapshot codecov, coveralls"     
