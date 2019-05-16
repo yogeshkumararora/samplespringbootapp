@@ -24,7 +24,20 @@ jobs:
 
     - stage: "Deploy to ossrh"
       jdk: openjdk11
-      script: "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy -DskipTests"
+      deploy:
+        provider: script
+        script: 
+          if [[ $TRAVIS_BRANCH == "release" ]]; then
+            export TRAVIS_TAG="1.$TRAVIS_BUILD_NUMBER" &&
+            git config --local user.name "Parjanya Mudunuri" &&
+            git config --local user.email "parjanya@gmail.com" &&
+            git tag "$TRAVIS_TAG" "$TRAVIS_COMMIT" &&
+            cp .travis.settings.xml $HOME/.m2/settings.xml &&
+            mvn release:clean release:prepare -DdryRun=true;
+          else
+            cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy -DskipTests
+          fi
+        skip_cleanup: true
         
     - stage: "Build and push docker image"
       jdk: openjdk11
