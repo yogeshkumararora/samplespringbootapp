@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 copy_maven_settings() {
     echo "Copying across maven settings"
@@ -20,7 +20,7 @@ buildArtifact() {
         mvn release:clean release:prepare -DdryRun=true
     else
         echo "Snapshot build"
-        mvn deploy -DskipTests
+        mvn deploy
     fi
 }
 
