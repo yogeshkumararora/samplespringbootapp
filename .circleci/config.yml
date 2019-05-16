@@ -113,9 +113,7 @@ jobs:
             echo "$DOCKER_BINTRAY_API" | docker login -u "$DOCKER_USERNAME" --password-stdin parj-docker-public-docker.bintray.io 
             appVersion=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
             docker tag parjanya/samplespringbootapp:$appVersion parj-docker-public-docker.bintray.io/samplespringbootapp:$appVersion
-            docker tag parj-docker-public-docker.bintray.io/samplespringbootapp:$appVersion parj-docker-public-docker.bintray.io/samplespringbootapp:latest
             docker push parj-docker-public-docker.bintray.io/samplespringbootapp:$appVersion
-            docker push parj-docker-public-docker.bintray.io/samplespringbootapp:latest
 
 workflows:
   version: 2
