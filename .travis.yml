@@ -10,39 +10,42 @@ cache:
     - .autoconf
     - $HOME/.m2
     - $HOME/.cache
+    - $TRAVIS_BUILD_DIR/target
 
-script: "mvn verify"
+script: "mvn validate"
 
 jobs:
   include:
-    - stage: "Tests and upload snapshot codecov, coveralls"     
-      jdk: openjdk11
-      script: "mvn test jacoco:report"
-      after_script:
-        - bash <(curl -s https://codecov.io/bash)
-        - mvn coveralls:report
-
     - stage: "Deploy to ossrh"
       jdk: openjdk11
       deploy:
         provider: script
-        script: 
+        script:
+          -| cp .travis.settings.xml $HOME/.m2/settings.xml &&
           if [[ $TRAVIS_BRANCH == "release" ]]; then
-            export TRAVIS_TAG="1.$TRAVIS_BUILD_NUMBER" &&
-            git config --local user.name "Parjanya Mudunuri" &&
-            git config --local user.email "parjanya@gmail.com" &&
-            git tag "$TRAVIS_TAG" "$TRAVIS_COMMIT" &&
-            cp .travis.settings.xml $HOME/.m2/settings.xml &&
+            echo "Release build";
+            export TRAVIS_TAG="1.$TRAVIS_BUILD_NUMBER";
+            git config --local user.name "Parjanya Mudunuri";
+            git config --local user.email "parjanya@gmail.com";
+            git tag "$TRAVIS_TAG" "$TRAVIS_COMMIT";
             mvn release:clean release:prepare -DdryRun=true;
           else
-            cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy -DskipTests
+            echo "Snapshot build";
+            mvn deploy -DskipTests;
           fi
         skip_cleanup: true
-        
+
+    - stage: "Tests and upload snapshot codecov, coveralls"     
+      jdk: openjdk11
+      script: "mvn jacoco:report"
+      after_script:
+        - bash <(curl -s https://codecov.io/bash)
+        - mvn coveralls:report
+
     - stage: "Build and push docker image"
       jdk: openjdk11
       services: docker
-      script: "mvn package docker:build -DskipTests"
+      script: "mvn docker:build -DskipTests"
       after_script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker push $DOCKER_USERNAME/samplespringbootapp:1.0-SNAPSHOT
