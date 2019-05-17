@@ -29,7 +29,6 @@ exeerr() {
 
 copy_maven_settings() {
     exeinf "Copying across maven settings"
-    cp .travis/settings.xml $HOME/.m2/settings.xml
 }
 
 setup_git() {
@@ -49,10 +48,10 @@ buildArtifact() {
             export CIRCLECI_TAG="CIRCLE.$CIRCLE_BUILD_NUM"
             git tag "$CIRCLECI_TAG"
         fi
-        mvn release:clean release:prepare -DdryRun=true
+        mvn -s .travis/settings.xml release:clean release:prepare -DdryRun=true
     else
         exeinf "Snapshot build"
-        mvn deploy
+        mvn -s .travis/settings.xml deploy
     fi
 }
 
