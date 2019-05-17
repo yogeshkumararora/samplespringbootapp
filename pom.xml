@@ -4,7 +4,7 @@
   <groupId>io.github.parj</groupId>
   <artifactId>samplespringbootapp</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>samplespringbootapp</name>
   <url>https://github.com/parj/SampleSpringBootApp</url>
 
@@ -19,6 +19,7 @@
     <url>https://github.com/parj/AddOnJavaAntTasks</url>
     <connection>scm:git:git@github.com:parj/SampleSpringBootApp.git</connection>
     <developerConnection>scm:git:git@github.com:parj/SampleSpringBootApp.git</developerConnection>
+    <tag>samplespringbootapp-1.0</tag>
   </scm>
 
 
