@@ -48,7 +48,17 @@ buildArtifact() {
             export CIRCLECI_TAG="CIRCLE.$CIRCLE_BUILD_NUM"
             git tag "$CIRCLECI_TAG"
         fi
-        mvn -B -s .travis/settings.xml release:clean release:prepare -DdryRun=true
+        if [[ $TRAVIS_BRANCH == "release" ]]; then
+            mvn -B -s .travis/settings.xml release:clean release:prepare -DdryRun=true
+        fi
+        if [[ $CIRCLE_BRANCH = "release" ]] && [[ -z $CIRCLE_TAG ]]; then
+            exeinf "Performing release"
+            mvn -B -s .travis/settings.xml release:clean release:prepare release:perform -DscmCommentPrefix="[skip ci] [maven-release-plugin] "
+            exeinf "Pushing tags"
+            git push --tags
+            exeinf "Pushing maven commit"
+            git push -u origin release
+        fi
     else
         exeinf "Snapshot build"
         mvn -s .travis/settings.xml deploy
