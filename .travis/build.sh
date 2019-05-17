@@ -48,7 +48,7 @@ buildArtifact() {
             export CIRCLECI_TAG="CIRCLE.$CIRCLE_BUILD_NUM"
             git tag "$CIRCLECI_TAG"
         fi
-        mvn -s .travis/settings.xml release:clean release:prepare -DdryRun=true
+        mvn -B -s .travis/settings.xml release:clean release:prepare -DdryRun=true
     else
         exeinf "Snapshot build"
         mvn -s .travis/settings.xml deploy
