@@ -37,13 +37,6 @@ setup_git() {
     git config --global user.name "Travis CI"
 }
 
-decryptAndImportPrivateKeys() {
-    exeinf "Extracting private gpg key"
-    openssl aes-256-cbc -d -in .travis/secret-private-key -out .travis/gpg-private-key.asc -k "${PRIVATE_KEY}"
-    exeinf "Importing gpg key"
-    gpg --import .travis/gpg-private-key.asc
-}
-
 pushTagsAndCommit() {
     exeinf "Pushing tags"
     git push --tags
@@ -69,9 +62,6 @@ buildArtifact() {
 
         #Only perform full release on circleci
         if [[ $CIRCLE_BRANCH = "release" ]] && [[ -z $CIRCLE_TAG ]]; then
-            exeinf "Performing release"
-            decryptAndImportPrivateKeys
-
             exeinf "Performing maven release"
             mvn -B -s .travis/settings.xml release:clean release:prepare release:perform -DscmCommentPrefix="[skip ci] [maven-release-plugin] "
 
