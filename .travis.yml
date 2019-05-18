@@ -10,9 +10,10 @@ cache:
     - .autoconf
     - $HOME/.m2
     - $HOME/.cache
+    - $HOME/.gnupg
     - $TRAVIS_BUILD_DIR/target
 
-script: "mvn verify"
+script: ".travis/importKeys.sh && mvn verify"
 
 jobs:
   include:
