@@ -7,14 +7,14 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/openjdk:8-jdk
+      - image: circleci/openjdk:11-jdk
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/postgres:9.4
 
-    working_directory: ~/repo-8
+    working_directory: ~/repo-11
 
     environment:
       # Customize the JVM maximum heap limit
@@ -37,8 +37,15 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
+      - run:
+          name: Add GPG key
+          command: .travis/importKeys.sh
+
+      - setup_remote_docker:
+          docker_layer_caching: true
+
       # run tests!
-      - run: mvn verify
+      - run: .travis/build.sh
 
       - run:
           name: Save test results
@@ -50,19 +57,25 @@ jobs:
       - store_test_results:
           path: ~/test-results
       - store_artifacts:
-          path: ~/test-results/junit         
+          path: ~/test-results/junit       
 
-  openjdk-11:
+      - run:
+          name: Push docker image
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            mvn docker:push  
+
+  openjdk-8:
     docker:
       # specify the version you desire here
-      - image: circleci/openjdk:11-jdk
+      - image: circleci/openjdk:8-jdk
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/postgres:9.4
 
-    working_directory: ~/repo-11
+    working_directory: ~/repo-8
 
     environment:
       # Customize the JVM maximum heap limit
@@ -92,14 +105,11 @@ jobs:
       - run:
           name: Add GPG key
           command: .travis/importKeys.sh
-
-      - setup_remote_docker:
-          docker_layer_caching: true
-
+          
       # run tests!
       - run: 
           name: Build Artifact, Release Artifact to Nexus, Build Docker image
-          command: .travis/build.sh
+          command: mvn test
 
       - run:
           name: Save test results
@@ -113,15 +123,13 @@ jobs:
       - store_artifacts:
           path: ~/test-results/junit
 
-      - run:
-          name: Push docker image
-          command: |
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            mvn docker:push
-
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
-      - openjdk-11
+      - openjdk-8:
+          filters:
+            branches:
+              ignore:
+                - release
