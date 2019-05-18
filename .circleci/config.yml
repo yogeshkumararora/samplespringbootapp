@@ -73,10 +73,6 @@ jobs:
           fingerprints:
             - "a4:05:8e:51:a6:48:d1:65:d4:f4:a1:fd:67:e8:8f:c2"
 
-      - run:
-          name: Add GPG key
-          command: .travis/importKeys.sh
-
       - checkout
 
       # Download and cache dependencies
@@ -92,6 +88,10 @@ jobs:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
+
+      - run:
+          name: Add GPG key
+          command: .travis/importKeys.sh
 
       # run tests!
       - run: 
