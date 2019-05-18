@@ -4,7 +4,7 @@
   <groupId>io.github.parj</groupId>
   <artifactId>samplespringbootapp</artifactId>
   <packaging>jar</packaging>
-  <version>1.4-SNAPSHOT</version>
+  <version>1.5-SNAPSHOT</version>
   <name>samplespringbootapp</name>
   <url>https://github.com/parj/SampleSpringBootApp</url>
  
