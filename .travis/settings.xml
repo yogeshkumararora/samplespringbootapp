@@ -9,7 +9,7 @@
             <password>${env.OSS_PASSWORD}</password>
         </server>
         <server>
-            <id>parjany@gmail.com</id>
+            <id>${env.GPG_KEYNAME}</id>
             <passphrase>${env.GPG_PASSPHRASE}</passphrase>
         </server>
     </servers>
@@ -20,7 +20,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <gpg.keyname>parjanya@gmail.com</gpg.keyname>
+                <gpg.keyname>${env.GPG_KEYNAME}</gpg.keyname>
             </properties>
         </profile>
     </profiles>
