@@ -63,13 +63,13 @@ buildArtifact() {
         #Only perform full release on circleci
         if [[ $CIRCLE_BRANCH = "release" ]] && [[ -z $CIRCLE_TAG ]]; then
             exeinf "Performing maven release"
-            mvn -B -s .travis/settings.xml release:clean release:prepare release:perform -DscmCommentPrefix="[skip ci] [maven-release-plugin] "
+            mvn -B -s .travis/settings.xml release:clean release:prepare docker:build release:perform -DscmCommentPrefix="[skip ci] [maven-release-plugin] "
 
             pushTagsAndCommit
         fi
     else
         exeinf "Snapshot build"
-        mvn -s .travis/settings.xml deploy
+        mvn -s .travis/settings.xml deploy docker:build
     fi
 }
 

@@ -34,5 +34,8 @@ jobs:
       services: docker
       script: "mvn docker:build"
       after_script:
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - mvn docker:push
+        - echo "$DOCKER_BINTRAY_API" | docker login -u "$DOCKER_USERNAME" --password-stdin parj-docker-public-docker.bintray.io 
+        - appVersion=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+        - echo "Version is ${appVersion}"
+        - docker tag parjanya/samplespringbootapp:${appVersion} parj-docker-public-docker.bintray.io/samplespringbootapp:latest
+        - docker push parj-docker-public-docker.bintray.io/samplespringbootapp:latest
