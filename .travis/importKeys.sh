@@ -21,6 +21,8 @@ exeerr() {
 }
 
 decryptAndImportPrivateKeys() {
+    exeinf "Unzipping archive"
+    unzip -o .travis/secret-private-key.zip
     exeinf "Extracting private gpg key"
     openssl aes-256-cbc -d -in .travis/secret-private-key -out .travis/gpg-private-key.asc -k "${PRIVATE_KEY}"
     exeinf "Importing gpg key"
