@@ -44,6 +44,14 @@ pushTagsAndCommit() {
     git push -u origin release
 }
 
+#Required as mvn:release bumps tags
+buildDockerImageFromLatestTag() {
+    latesttag=$(git describe --tags)
+    exeinf "Checking out latest tags ${latesttag}"
+    git checkout ${latesttag}
+    mvn package docker:build -DskipTests
+}
+
 buildArtifact() {
     if [[ $TRAVIS_BRANCH == "release" ]] || [[ $CIRCLE_BRANCH = "release" ]]; then
         exeinf "Release build"
@@ -63,9 +71,10 @@ buildArtifact() {
         #Only perform full release on circleci
         if [[ $CIRCLE_BRANCH = "release" ]] && [[ -z $CIRCLE_TAG ]]; then
             exeinf "Performing maven release"
-            mvn -B -s .travis/settings.xml release:clean release:prepare package docker:build release:perform -DscmCommentPrefix="[skip ci] [maven-release-plugin] "
+            mvn -B -s .travis/settings.xml release:clean release:prepare release:perform -DscmCommentPrefix="[skip ci] [maven-release-plugin] "
 
             pushTagsAndCommit
+            buildDockerImageFromLatestTag
         fi
     else
         exeinf "Snapshot build"
