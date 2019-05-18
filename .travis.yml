@@ -21,7 +21,6 @@ jobs:
       deploy:
         provider: script
         script: .travis/build.sh
-        skip_cleanup: true
 
     - stage: "Tests and upload snapshot codecov, coveralls"     
       jdk: openjdk11

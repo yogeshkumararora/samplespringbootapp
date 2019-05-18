@@ -72,7 +72,7 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "a4:05:8e:51:a6:48:d1:65:d4:f4:a1:fd:67:e8:8f:c2"
-            
+
       - checkout
 
       # Download and cache dependencies
@@ -90,7 +90,9 @@ jobs:
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
       # run tests!
-      - run: .travis/build.sh
+      - run: 
+        name: Build and Release Artifact to Nexus
+        command: .travis/build.sh
 
       - run:
           name: Save test results
