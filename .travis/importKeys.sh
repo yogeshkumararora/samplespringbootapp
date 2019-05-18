@@ -30,6 +30,7 @@ decryptAndImportPrivateKeys() {
     exeinf "List Keys"
     gpg --list-secret-keys
     gpg --list-public-keys
+    exeinf "Completed importing key"
 }
 
 main "$@"
