@@ -15,3 +15,5 @@ target/
 
 .gradle/
 build/
+
+bin/

@@ -69,6 +69,10 @@ jobs:
       MAVEN_OPTS: -Xmx3200m
 
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "a4:05:8e:51:a6:48:d1:65:d4:f4:a1:fd:67:e8:8f:c2"
+
       - checkout
 
       # Download and cache dependencies
@@ -85,8 +89,17 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
+      - run:
+          name: Add GPG key
+          command: .travis/importKeys.sh
+
+      - setup_remote_docker:
+          docker_layer_caching: true
+
       # run tests!
-      - run: .travis/build.sh
+      - run: 
+          name: Build Artifact, Release Artifact to Nexus, Build Docker image
+          command: .travis/build.sh
 
       - run:
           name: Save test results
@@ -100,22 +113,11 @@ jobs:
       - store_artifacts:
           path: ~/test-results/junit
 
-      - setup_remote_docker:
-          docker_layer_caching: true
-
-      - run: 
-          name: Build docker image
-          command: mvn docker:build
-
       - run:
           name: Push docker image
           command: |
-            echo "$DOCKER_BINTRAY_API" | docker login -u "$DOCKER_USERNAME" --password-stdin parj-docker-public-docker.bintray.io 
-            appVersion=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-            echo "Version is ${appVersion}"
-            docker tag parjanya/samplespringbootapp:${appVersion} parj-docker-public-docker.bintray.io/samplespringbootapp:latest
-            docker image ls
-            docker push parj-docker-public-docker.bintray.io/samplespringbootapp:latest
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            mvn docker:push
 
 workflows:
   version: 2
