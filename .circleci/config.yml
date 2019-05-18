@@ -91,8 +91,8 @@ jobs:
 
       # run tests!
       - run: 
-        name: Build and Release Artifact to Nexus
-        command: .travis/build.sh
+          name: Build and Release Artifact to Nexus
+          command: .travis/build.sh
 
       - run:
           name: Save test results
