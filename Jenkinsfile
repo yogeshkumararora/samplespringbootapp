@@ -6,6 +6,11 @@ node {
         println "Branch is " + env.BRANCH_NAME
         check()
     }
+
+    stage('Build') {
+        buildResult = sh (script: ".travis/build.sh", returnStatus: true)
+    }
+
 }
 
 def check() {
