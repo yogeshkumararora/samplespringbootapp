@@ -53,7 +53,7 @@ buildDockerImageFromLatestTag() {
 }
 
 buildArtifact() {
-    echo "Branch is ${GIT_BRANCH}"
+    echo "Branch is ${BRANCH_NAME}"
 
     if [[ $TRAVIS_BRANCH == "release" ]] || [[ $CIRCLE_BRANCH = "release" ]]; then
         exeinf "Release build"
