@@ -9,7 +9,8 @@ node {
 
     stage('Build') {
         withCredentials([string(credentialsId:'GPG_KEYNAME', variable: 'GPG_KEYNAME'), 
-                         string(credentialsId:'GPG_PASSPHRASE', variable: 'GPG_PASSPHRASE')]) {
+                         string(credentialsId:'GPG_PASSPHRASE', variable: 'GPG_PASSPHRASE'),
+                         string(credentialsId:'OSS_PASSWORD', varuable: 'OSS_PASSWORD')]) {
             buildResult = sh (script: ".travis/build.sh", returnStatus: true)
         }
     }
