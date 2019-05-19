@@ -8,10 +8,11 @@ node {
     }
 
     stage('Build') {
+        sh 'printenv'
         withCredentials([string(credentialsId:'GPG_KEYNAME', variable: 'GPG_KEYNAME'), 
                          string(credentialsId:'GPG_PASSPHRASE', variable: 'GPG_PASSPHRASE'),
                          string(credentialsId:'OSS_PASSWORD', variable: 'OSS_PASSWORD')]) {
-            buildResult = sh (script: ".travis/build.sh", returnStatus: true)
+            sh '.travis/build.sh'
         }
     }
 
