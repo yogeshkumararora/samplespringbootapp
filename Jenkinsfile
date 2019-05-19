@@ -10,7 +10,7 @@ node {
     if (result == 0) {
         env.CI_SKIP = "true"
         ansiColor('xterm') {
-            printf "\e[31m\e[1mBold'[maven-release-plugin]' found in git commit message. Aborting!\e[0m\e[0m\n"
+            printf "[maven-release-plugin]' found in git commit message. Aborting!"
         }
         currentBuild.result = 'ABORTED'
         error("'[maven-release-plugin]' found in git commit message. Aborting!")
