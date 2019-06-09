@@ -53,15 +53,10 @@ buildDockerImageFromLatestTag() {
 }
 
 buildArtifact() {
+    echo "Branch is ${BRANCH_NAME}"
+
     if [[ $TRAVIS_BRANCH == "release" ]] || [[ $CIRCLE_BRANCH = "release" ]]; then
         exeinf "Release build"
-        if [[ ! -z $TRAVIS_BRANCH ]]; then
-            export TRAVIS_TAG="TRAVIS.$TRAVIS_BUILD_NUMBER"
-            git tag "$TRAVIS_TAG" "$TRAVIS_COMMIT"
-        elif [[ ! -z $CIRCLE_BRANCH ]]; then
-            export CIRCLECI_TAG="CIRCLE.$CIRCLE_BUILD_NUM"
-            git tag "$CIRCLECI_TAG"
-        fi
 
         #Just do a dry run on TravisCI
         if [[ $TRAVIS_BRANCH == "release" ]]; then
@@ -77,8 +72,13 @@ buildArtifact() {
             buildDockerImageFromLatestTag
         fi
     else
-        exeinf "Snapshot build"
-        mvn -s .travis/settings.xml deploy docker:build
+        if [[ -z $JENKINS_URL ]]; then
+            exeinf "Snapshot build"
+            mvn -s .travis/settings.xml deploy docker:build
+        else
+            exeinf "Jenkins Snapshot build"
+            mvn -s .travis/settings.xml verify docker:build
+        fi
     fi
 }
 
