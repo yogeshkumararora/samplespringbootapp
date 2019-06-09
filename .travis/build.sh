@@ -72,8 +72,13 @@ buildArtifact() {
             buildDockerImageFromLatestTag
         fi
     else
-        exeinf "Snapshot build"
-        mvn -s .travis/settings.xml deploy docker:build
+        if [[ -z $JENKINS_URL ]]; then
+            exeinf "Snapshot build"
+            mvn -s .travis/settings.xml deploy docker:build
+        else
+            exeinf "Jenkins Snapshot build"
+            mvn -s .travis/settings.xml verify docker:build
+        fi
     fi
 }
 
