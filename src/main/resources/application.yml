@@ -1,0 +1,12 @@
+server.port: 9999
+
+management:
+  endpoint:
+    metrics.enabled: true
+    prometheus.enabled: true
+  endpoints:
+    web.exposure.include: "*"
+  metrics.export:
+    logging:
+      enabled: true
+      step: PT10S

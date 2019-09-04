@@ -1,0 +1,19 @@
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are by default assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
+        <encoder>
+            <pattern>[%p] %t - %d{yyyy-MM-dd HH:mm:ss.SSS}; - %c [%thread] - %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+
+    <logger name="org.springframework" level="warn"/>
+
+    <logger name="io.micrometer" level="trace" />
+</configuration>
