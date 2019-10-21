@@ -16,6 +16,9 @@
     volumeMounts:: {},
     env:: {},
     volumes:: {},
+    livenessProbe:: {},
+    readinessProbe:: {},
+    replicas:: {},
 
     local service = {
         apiVersion: "v1",
@@ -49,7 +52,7 @@
             }
         },
         "spec": {
-            "replicas": 1,
+            "replicas": if std.length($.replicas) > 0 then $.replicas else 2,
             "selector": {
                 "matchLabels": {
                     "app": $.serviceName
@@ -68,6 +71,7 @@
                             "image": $.dockerImage,
                             "ports": [
                                 {
+                                    "name": "container-port",
                                     "containerPort": $.servicePort
                                 }
                             ],
@@ -78,6 +82,8 @@
                             [if std.length($.env) > 0 then "env"]: [ item
                                 for item in $.env
                             ],
+                            [if std.length($.livenessProbe) > 0 then "livenessProbe"]: if std.length($.livenessProbe) > 0 then $.livenessProbe ,
+                            [if std.length($.readinessProbe) > 0 then "readinessProbe"]: if std.length($.readinessProbe) > 0 then $.readinessProbe ,
                         }
                     ],
                     [if std.length($.volumes) > 0 then "volumes"]: [ item
