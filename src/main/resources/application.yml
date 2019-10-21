@@ -1,12 +1,9 @@
-server.port: 9999
 
-management:
-  endpoint:
-    metrics.enabled: true
-    prometheus.enabled: true
-  endpoints:
-    web.exposure.include: "*"
-  metrics.export:
-    logging:
-      enabled: true
-      step: PT10S
+server:
+  port: 9999
+  servlet:
+    context-path: /hello/
+
+logging:
+  pattern:
+    console: "[%p] %t | %d{yyyy-MM-dd HH:mm:ss.SSS}; | %c [%thread] | %m%n"

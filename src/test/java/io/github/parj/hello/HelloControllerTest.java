@@ -1,5 +1,6 @@
 package io.github.parj.hello;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,5 +28,15 @@ public class HelloControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(content().string(equalTo("")));
+    }
+
+    @Test
+    public void getCommitId() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/commitId").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Commit id")))
+                .andExpect(content().string(containsString("Commit branch")))
+                .andExpect(content().string(containsString("Commit message")))
+                .andExpect(content().string(containsString("Commit id Abbrev")));
     }
 }

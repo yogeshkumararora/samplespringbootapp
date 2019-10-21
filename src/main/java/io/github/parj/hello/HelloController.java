@@ -13,4 +13,9 @@ public class HelloController {
         return new RedirectView("swagger-ui.html");
     }
 
+    @RequestMapping("/hello")
+    public String hello() {
+        return "Greetings from Spring Boot!";
+    }
+
 }
