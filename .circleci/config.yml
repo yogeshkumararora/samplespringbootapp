@@ -63,12 +63,7 @@ jobs:
           name: Push docker image
           command: |
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            mvn docker:push  
-
-      - run:
-          name: Upload artifact to Github
-          command: |
-            mvn deploy -Dregistry=https://maven.pkg.github.com/parj -Dtoken=$GH_TOKEN
+            mvn docker:push
 
   openjdk-8:
     docker:
