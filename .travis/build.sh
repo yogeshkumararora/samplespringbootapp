@@ -74,7 +74,7 @@ buildArtifact() {
     else
         if [[ $TRAVIS == "true" ]]; then
             exeinf "Travis Snapshot build"
-            mvn -s .travis/settings.xml package docker:build
+            mvn -s .travis/settings.xml package docker:build -Dgpg.skip
         else
             exeinf "Jenkins Snapshot build"
             mvn -s .travis/settings.xml deploy docker:build

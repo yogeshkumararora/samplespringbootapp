@@ -122,6 +122,63 @@ jobs:
           path: ~/test-results
       - store_artifacts:
           path: ~/test-results/junit
+  openjdk-13:
+    docker:
+      # specify the version you desire here
+      - image: circleci/openjdk:13-jdk-buster
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+
+    working_directory: ~/repo-13
+
+    environment:
+      # Customize the JVM maximum heap limit
+      MAVEN_OPTS: -Xmx3200m
+
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "a4:05:8e:51:a6:48:d1:65:d4:f4:a1:fd:67:e8:8f:c2"
+
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: mvn dependency:go-offline
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+
+      - run:
+          name: Add GPG key
+          command: .travis/importKeys.sh
+          
+      # run tests!
+      - run: 
+          name: Build Artifact, Release Artifact to Nexus, Build Docker image
+          command: mvn test
+
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
+          when: always
+
+      - store_test_results:
+          path: ~/test-results
+      - store_artifacts:
+          path: ~/test-results/junit
 
 workflows:
   version: 2
@@ -133,3 +190,8 @@ workflows:
             branches:
               ignore:
                 - release
+      - openjdk-13:
+          filters:
+            branches:
+              ignore:
+                - release     
