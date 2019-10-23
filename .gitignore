@@ -17,3 +17,8 @@ target/
 build/
 
 bin/
+
+bazel-bin/
+bazel-out/
+bazel-SpringBootApp/
+bazel-testlogs/
