@@ -12,8 +12,7 @@ cache:
 before_install:
 - openssl aes-256-cbc -K $encrypted_a442ab25e147_key -iv $encrypted_a442ab25e147_iv
   -in .travis/gpg-private-key.asc.enc -out .travis/gpg-private-key.asc -d && gpg --batch --import .travis/gpg-private-key.asc
-- gpg --list-secret-keys
-- gpg --list-public-keys
+- sudo apt-get -y install gnupg-agent pinentry-gtk2 
 
 env:
   - GPG_TTY=$(tty)
