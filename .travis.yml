@@ -14,7 +14,8 @@ before_install:
   -in .travis/gpg-private-key.asc.enc -out .travis/gpg-private-key.asc -d && gpg --batch --import .travis/gpg-private-key.asc
 - gpg --list-secret-keys
 - gpg --list-public-keys
-- echo "#no-tty" >> ~/.gnupg/gpg.conf
 
+env:
+  - GPG_TTY==$(tty)
 
 script: "mvn install -DskipTests"
