@@ -16,5 +16,8 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_a442ab25e147_key -iv $encrypted_a442ab25e147_iv
   -in .travis/gpg-private-key.asc.enc -out .travis/gpg-private-key.asc -d && gpg --batch --import .travis/gpg-private-key.asc
 - sudo apt-get -y install gnupg-agent pinentry-gtk2 
+- echo "allow-loopback-pinentry" > ~/.gnupg/gpg-agent.conf
+- gpgconf --reload gpg-agent
+- mvn dependency:go-offline
 
 script: "mvn install -DskipTests"
