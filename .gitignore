@@ -22,3 +22,5 @@ bazel-bin/
 bazel-out/
 bazel-SpringBootApp/
 bazel-testlogs/
+
+gpg-private-key.asc
