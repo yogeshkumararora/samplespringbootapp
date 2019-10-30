@@ -1,48 +1,17 @@
 dist: bionic
 
 language: java
-jdk:
-- openjdk8
-- openjdk11
-- openjdk12
 
 cache:
   directories:
   - .autoconf
   - $HOME/.m2
-  - $HOME/.cache"
+  - $HOME/.cache
   - $HOME/.gnupg
   - $TRAVIS_BUILD_DIR/target
 
 before_install:
-- sudo apt-get -y install gnupg2
 - openssl aes-256-cbc -K $encrypted_a442ab25e147_key -iv $encrypted_a442ab25e147_iv
   -in .travis/gpg-private-key.asc.enc -out .travis/gpg-private-key.asc -d && gpg --batch --import .travis/gpg-private-key.asc
 
-script: "mvn verify"
-
-jobs:
-  include:
-  - stage: Deploy to ossrh
-    jdk: openjdk11
-    deploy:
-      provider: script
-      script: ".travis/build.sh"
-  - stage: Tests and upload snapshot codecov, coveralls
-    jdk: openjdk11
-    script: mvn jacoco:report
-    after_script:
-    - bash <(curl -s https://codecov.io/bash)
-    - mvn coveralls:report
-  - stage: Build and push docker image
-    jdk: openjdk11
-    services: docker
-    script: mvn docker:build
-    after_script:
-    - echo "$DOCKER_BINTRAY_API" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      parj-docker-public-docker.bintray.io
-    - appVersion=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-    - echo "Version is ${appVersion}"
-    - docker tag parjanya/samplespringbootapp:${appVersion} parj-docker-public-docker.bintray.io/samplespringbootapp:latest
-    - docker push parj-docker-public-docker.bintray.io/samplespringbootapp:latest
-
+script: "mvn install -DskipTests"
