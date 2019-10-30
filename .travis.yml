@@ -13,5 +13,8 @@ cache:
 before_install:
 - openssl aes-256-cbc -K $encrypted_a442ab25e147_key -iv $encrypted_a442ab25e147_iv
   -in .travis/gpg-private-key.asc.enc -out .travis/gpg-private-key.asc -d && gpg --batch --import .travis/gpg-private-key.asc
+- cat ~/.gnupg/gpg.conf
+- echo "#no-tty" >> ~/.gnupg/gpg.conf
+- echo "batch"
 
 script: "mvn install -DskipTests"
