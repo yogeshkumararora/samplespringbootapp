@@ -1,3 +1,6 @@
 [submodule ".ci"]
 	path = .ci
 	url = https://github.com/parj/ci-build
+[submodule "kubernetes-template"]
+	path = kubernetes-template
+	url = https://github.com/parj/jsonnet-service-ingress-deployment
