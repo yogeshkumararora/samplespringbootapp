@@ -4,3 +4,7 @@
 # What is this
 
 A sample spring boot application. Whilst building the application using `maven`, the project checks the CVE database for vulnerabilities (OWASP is used). In addition - travisci is used for automated builds, plus there is dependency scan is done via DepShield and FOSS status is checked by fossa.io.
+
+# To use the kubernetes template or the ci-cd
+
+Run `git submodule update --init --recursive`
