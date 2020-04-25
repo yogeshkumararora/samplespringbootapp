@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: app-ingress # {"$ref":"#/definitions/io.k8s.cli.substitutions.ingress-name-value"}
+  namespace: app-namespace # {"$ref":"#/definitions/io.k8s.cli.setters.namespace"}
+
+spec:
+  rules:
+  - host: "mysterious-grass-savages.github" # {"$ref":"#/definitions/io.k8s.cli.setters.host"}
+    http:
+      paths:
+      - path: "/hello" # {"$ref":"#/definitions/io.k8s.cli.setters.path"}
+        backend:
+          serviceName: app-service # {"$ref":"#/definitions/io.k8s.cli.substitutions.service-name-value"}
+          servicePort: 9999 # {"$ref":"#/definitions/io.k8s.cli.setters.port"}

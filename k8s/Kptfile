@@ -1,0 +1,100 @@
+apiVersion: kpt.dev/v1alpha1
+kind: Kptfile
+metadata:
+    name: kpt-service-ingress-deployment
+upstream:
+    type: git
+    git:
+        commit: 0a938eb9283cc02a5dd603a9d6f3a51b4cdcf109
+        repo: https://github.com/parj/kpt-service-ingress-deployment
+        directory: /
+        ref: v0.2
+packageMetadata:
+    shortDescription: Simple springboot app package
+openAPI:
+    definitions:
+        io.k8s.cli.setters.host:
+            x-k8s-cli:
+                setter:
+                    name: host
+                    value: mysterious-grass-savages.github
+        io.k8s.cli.setters.livenessProbePath:
+            x-k8s-cli:
+                setter:
+                    name: livenessProbePath
+                    value: /hello/commitId
+        io.k8s.cli.setters.name:
+            x-k8s-cli:
+                setter:
+                    name: name
+                    value: app
+        io.k8s.cli.setters.namespace:
+            x-k8s-cli:
+                setter:
+                    name: namespace
+                    value: app-namespace
+        io.k8s.cli.setters.path:
+            x-k8s-cli:
+                setter:
+                    name: path
+                    value: /hello
+        io.k8s.cli.setters.port:
+            x-k8s-cli:
+                setter:
+                    name: port
+                    value: "9999"
+        io.k8s.cli.setters.readinessProbePath:
+            x-k8s-cli:
+                setter:
+                    name: readinessProbePath
+                    value: /hello/actuator/health
+        io.k8s.cli.setters.replicas:
+            x-k8s-cli:
+                setter:
+                    name: replicas
+                    value: "2"
+        io.k8s.cli.setters.tag:
+            x-k8s-cli:
+                setter:
+                    name: tag
+                    value: 1.6-SNAPSHOT
+        io.k8s.cli.substitutions.appcontainer-name-value:
+            x-k8s-cli:
+                substitution:
+                    name: container-name-value
+                    pattern: NAME_SETTER-container
+                    values:
+                      - marker: NAME_SETTER
+                        ref: '#/definitions/io.k8s.cli.setters.name'
+        io.k8s.cli.substitutions.appdeployment-name-value:
+            x-k8s-cli:
+                substitution:
+                    name: deployment-name-value
+                    pattern: NAME_SETTER-deployment
+                    values:
+                      - marker: NAME_SETTER
+                        ref: '#/definitions/io.k8s.cli.setters.name'
+        io.k8s.cli.substitutions.image-value:
+            x-k8s-cli:
+                substitution:
+                    name: image-value
+                    pattern: parjanya/samplespringbootapp:TAG_SETTER
+                    values:
+                      - marker: TAG_SETTER
+                        ref: '#/definitions/io.k8s.cli.setters.tag'
+        io.k8s.cli.substitutions.ingress-name-value:
+            x-k8s-cli:
+                substitution:
+                    name: ingress-name-value
+                    pattern: NAME_SETTER-ingress
+                    values:
+                      - marker: NAME_SETTER
+                        ref: '#/definitions/io.k8s.cli.setters.name'
+        io.k8s.cli.substitutions.service-name-value:
+            x-k8s-cli:
+                substitution:
+                    name: service-name-value
+                    pattern: NAME_SETTER-service
+                    values:
+                      - marker: NAME_SETTER
+                        ref: '#/definitions/io.k8s.cli.setters.name'

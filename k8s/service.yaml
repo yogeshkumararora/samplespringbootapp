@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service # {"$ref":"#/definitions/io.k8s.cli.substitutions.service-name-value"}
+  namespace: app-namespace # {"$ref":"#/definitions/io.k8s.cli.setters.namespace"}
+spec:
+  selector:
+    app: app # {"$ref":"#/definitions/io.k8s.cli.setters.name"}
+  ports:
+  - port: 9999 # {"$ref":"#/definitions/io.k8s.cli.setters.port"}
+    targetPort: 9999 # {"$ref":"#/definitions/io.k8s.cli.setters.port"}
+    protocol: TCP
+  type: ClusterIP
