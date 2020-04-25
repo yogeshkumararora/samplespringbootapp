@@ -16,7 +16,7 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/parj/AddOnJavaAntTasks</url>
+        <url>https://github.com/parj/SampleSpringBootApp</url>
         <connection>scm:git:git@github.com:parj/SampleSpringBootApp.git</connection>
         <developerConnection>scm:git:git@github.com:parj/SampleSpringBootApp.git</developerConnection>
         <tag>HEAD</tag>
