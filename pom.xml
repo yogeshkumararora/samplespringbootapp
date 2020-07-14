@@ -78,7 +78,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <swagger.version>2.9.2</swagger.version>
+        <swagger.version>3.0.0</swagger.version>
         <jar_file>${project.build.directory}/${project.build.finalName}.jar</jar_file>
     </properties>
 
