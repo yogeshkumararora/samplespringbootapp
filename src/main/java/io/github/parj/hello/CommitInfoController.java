@@ -2,6 +2,7 @@ package io.github.parj.hello;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public class CommitInfoController {
     @Value("${git.commit.id.abbrev}")
     private String commitIdAbbrev;
 
-    @RequestMapping("/commitId")
+    @RequestMapping(value = "/commitId", method = RequestMethod.GET)
     public Map<String, String> getCommitId() {
         Map<String, String> result = new HashMap<>();
         result.put("Commit message",commitMessage);
