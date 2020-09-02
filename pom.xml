@@ -10,10 +10,26 @@
 
     <licenses>
         <license>
-            <name>The Unlicense</name>
-            <url>https://unlicense.org</url>
+            <name>MIT License</name>
+            <url>https://choosealicense.com/licenses/mit/</url>
         </license>
     </licenses>
+
+    <organization>
+        <name>Parj</name>
+        <url>https://github.com/parj</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <id>pm</id>
+            <name>Parjanya Mudunuri</name>
+            <email>noneprovided@localhost</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
 
     <scm>
         <url>https://github.com/parj/SampleSpringBootApp</url>
@@ -21,7 +37,6 @@
         <developerConnection>scm:git:git@github.com:parj/SampleSpringBootApp.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
-
 
     <distributionManagement>
         <snapshotRepository>
@@ -54,15 +69,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- swagger -->
         <dependency>
             <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${swagger.version}</version>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
         </dependency>
         <!-- Spring boot actuator to expose metrics endpoint -->
         <dependency>
@@ -78,7 +89,11 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <swagger.version>3.0.0</swagger.version>
+        <docker.image>docker.io/parjanya/${project.name}:${project.version}</docker.image>
+        <app.port>9999</app.port>
         <jar_file>${project.build.directory}/${project.build.finalName}.jar</jar_file>
     </properties>
 
@@ -88,11 +103,15 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <!-- Checked via Snyk.io, not required -->
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
                 <version>5.3.2</version>
             </plugin>
+
+            <!-- Builds docker image, not bound to any phase and executed manually -->
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
@@ -102,14 +121,14 @@
                         <image>gcr.io/distroless/java:11</image>
                     </from>
                     <to>
-                        <image>docker.io/parjanya/${project.name}:${project.version}</image>
+                        <image>${docker.image}</image>
                     </to>
                     <container>
                         <args>
                             <arg>-Djava.security.egd=file:/dev/./urandom</arg>
                         </args>
                         <ports>
-                            <port>9999</port>
+                            <port>${app.port}</port>
                         </ports>
                     </container>
                 </configuration>
@@ -210,11 +229,38 @@
                         <goals>
                             <goal>revision</goal>
                         </goals>
+                        <phase>initialize</phase>
                     </execution>
                 </executions>
                 <configuration>
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <offline>true</offline>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>io.github.parj</groupId>
+                <artifactId>createk8syaml-maven-plugin</artifactId>
+                <version>0.0.2</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>createk8syaml</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <namespace>app-namespace</namespace>
+                    <image>${docker.image}</image>
+                    <port>${app.port}</port>
+                    <path>/hello</path>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.9.1</version>
             </plugin>
         </plugins>
     </build>
