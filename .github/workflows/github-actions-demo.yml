@@ -1,3 +1,5 @@
+name: Test and build
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,7 +16,7 @@ jobs:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java }}
       - run: mvn -B test --file pom.xml
-      
+
   build:
     runs-on: ubuntu-latest
 
