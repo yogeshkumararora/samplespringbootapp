@@ -1,0 +1,49 @@
+name: Release build
+on: 
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Build and Test
+        uses: qcastel/github-actions-maven-cmd@master
+        with:
+          maven-args: "clean install -Ddockerfile.skip -DdockerCompose.skip -Djib.skip"
+
+      - name: Release
+        uses: qcastel/github-actions-maven-cmd@master
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-11-openjdk/
+        with:
+          maven-args: "jib:build -Dmaven.javadoc.skip=true -DskipTests -DskipITs -Dmaven.deploy.skip=true"
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          
+          git-release-bot-name: "release-bot"
+          git-release-bot-email: "bot@github.local"
+
+          gpg-enabled: "true"
+          gpg-key-id: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+          gpg-key: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+          
+          docker-registry-id: registry-1.docker.io
+          docker-registry-username: ${{ secrets.DOCKER_USERNAME }}
+          docker-registry-password: ${{ secrets.DOCKER_PASSWORD }}

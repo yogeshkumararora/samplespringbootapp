@@ -118,7 +118,7 @@
                 <version>3.1.2</version>
                 <configuration>
                     <from>
-                        <image>openjdk:11</image>
+                        <image>gcr.io/distroless/java:11</image>
                     </from>
                     <to>
                         <image>${docker.image}</image>
@@ -262,6 +262,15 @@
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.9.1</version>
             </plugin>
+
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <scmCommentPrefix>[skip ci] [maven-release-plugin] </scmCommentPrefix>
+                    <tagNameFormat>@{project.version}</tagNameFormat>
+                </configuration>
+        </plugin>
         </plugins>
     </build>
 </project>
