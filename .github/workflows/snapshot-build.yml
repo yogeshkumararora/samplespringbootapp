@@ -1,5 +1,10 @@
-name: Test and build
-on: [push]
+name: Snapshot Test and build
+on: 
+  push:
+    branches-ignore:
+      - main
+    tags-ignore:
+      - '*'
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -10,12 +15,14 @@ jobs:
     name: Java ${{ matrix.Java }} (${{ matrix.distribution }}) sample
     steps:
       - uses: actions/checkout@v2
+
       - name: Cache local Maven repository
         uses: actions/cache@v2
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+
       - name: Setup java
         uses: actions/setup-java@v2
         with:
@@ -36,6 +43,12 @@ jobs:
         distribution: 'adopt'
         java-version: '11'
 
+    - id: install-secret-key
+      name: Install gpg secret key
+      run: |
+        cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
+        gpg --list-secret-keys --keyid-format LONG  
+
     - name: Cache local Maven repository
       uses: actions/cache@v2
       with:
@@ -43,12 +56,14 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
 
-    - name: Build with Maven
-      run: mvn --batch-mode --update-snapshots package
-
-    - run: mkdir staging && cp target/*.jar staging
-
-    - uses: actions/upload-artifact@v2
-      with:
-        name: Package
-        path: staging
+    - id: publish-to-central
+      name: Publish to Central Repository
+      env:
+        MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+        MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+      run: |
+        mvn \
+          --no-transfer-progress \
+          --batch-mode \
+          -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
+          clean deploy
