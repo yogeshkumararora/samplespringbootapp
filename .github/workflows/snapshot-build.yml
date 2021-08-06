@@ -46,15 +46,11 @@ jobs:
         server-username: DOCKER_USERNAME
         server-password: DOCKER_PASSWORD
 
-    - name: debug
-      run: |
-        cat /home/runner/.m2/settings.xml
-
     - id: publish-to-docker
       name: Publish to Docker (using jib)
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: |
         mvn \
           --batch-mode \
