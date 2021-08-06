@@ -30,6 +30,10 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
 
+    - name: debug
+      run: |
+        cat /home/runner/.m2/settings.xml
+
     - id: publish-to-central
       name: Publish to Central Repository
       env:
