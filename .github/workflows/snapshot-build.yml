@@ -23,6 +23,14 @@ jobs:
         gpg-private-key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
+    
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+
     - id: publish-to-central
       name: Publish to Central Repository
       env:
@@ -46,6 +54,13 @@ jobs:
         server-username: DOCKER_USERNAME
         server-password: DOCKER_PASSWORD
 
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+
     - id: publish-to-docker
       name: Publish to Docker (using jib)
       env:
@@ -55,10 +70,3 @@ jobs:
         mvn \
           --batch-mode \
           jib:build
-
-    - name: Cache local Maven repository
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
