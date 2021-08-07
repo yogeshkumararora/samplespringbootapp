@@ -92,7 +92,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <swagger.version>3.0.0</swagger.version>
-        <docker.image>docker.io/parjanya/${project.name}:${project.version}</docker.image>
+        <docker.image>registry.hub.docker.com/parjanya/${project.name}:${project.version}</docker.image>
         <app.port>9999</app.port>
         <jar_file>${project.build.directory}/${project.build.finalName}.jar</jar_file>
     </properties>

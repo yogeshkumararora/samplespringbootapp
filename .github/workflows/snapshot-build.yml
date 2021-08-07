@@ -50,7 +50,7 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: '11'
-        server-id: registry-1.docker.io
+        server-id: registry.hub.docker.com
         server-username: DOCKER_USERNAME
         server-password: DOCKER_PASSWORD
 
