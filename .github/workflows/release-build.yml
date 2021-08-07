@@ -42,7 +42,7 @@ jobs:
           git-release-bot-email: "bot@github.local"
 
           gpg-enabled: "true"
-          gpg-key-id: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+          gpg-key-id: ${{ secrets.GPG_KEY_ID }}
           gpg-key: ${{ secrets.GPG_KEY }}
           
           docker-registry-id: registry.hub.docker.com
