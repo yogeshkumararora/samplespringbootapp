@@ -41,7 +41,7 @@ jobs:
           git-release-bot-name: "release-bot"
           git-release-bot-email: "bot@github.local"
 
-          gpg-enabled: "true"
+          gpg-enabled: true
           gpg-key-id: ${{ secrets.GPG_KEY_ID }}
           gpg-key: ${{ secrets.GPG_KEY }}
           gpg-passphrase: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
@@ -49,3 +49,7 @@ jobs:
           docker-registry-id: registry.hub.docker.com
           docker-registry-username: ${{ secrets.DOCKER_USERNAME }}
           docker-registry-password: ${{ secrets.DOCKER_PASSWORD }}
+
+          maven-repo-server-id: ossrh
+          maven-repo-server-username: ${{ secrets.OSSRH_USERNAME }}
+          maven-repo-server-password: ${{ secrets.OSSRH_TOKEN }}
