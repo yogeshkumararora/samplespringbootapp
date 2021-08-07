@@ -35,7 +35,7 @@ jobs:
           JAVA_HOME: /usr/lib/jvm/java-11-openjdk/
         with:
           release-branch-name: "main"
-          maven-args: "jib:build -Dmaven.javadoc.skip=true -DskipTests -DskipITs -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} -Dgpg.keyname=${{ secrets.GPG_KEY_ID }}"
+          maven-args: "jib:build -DskipTests -DskipITs -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} -Dgpg.keyname=${{ secrets.GPG_KEY_ID }}"
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           
           git-release-bot-name: "release-bot"
