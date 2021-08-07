@@ -44,6 +44,6 @@ jobs:
           gpg-key-id: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
           gpg-key: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
           
-          docker-registry-id: registry-1.docker.io
+          docker-registry-id: registry.hub.docker.com
           docker-registry-username: ${{ secrets.DOCKER_USERNAME }}
           docker-registry-password: ${{ secrets.DOCKER_PASSWORD }}
