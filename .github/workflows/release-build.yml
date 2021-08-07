@@ -30,7 +30,7 @@ jobs:
           maven-args: "clean test -Ddockerfile.skip -DdockerCompose.skip -Djib.skip"
 
       - name: Release
-        uses: qcastel/github-actions-maven-cmd@master
+        uses: qcastel/github-actions-maven-release@v1.12.25
         env:
           JAVA_HOME: /usr/lib/jvm/java-11-openjdk/
         with:
