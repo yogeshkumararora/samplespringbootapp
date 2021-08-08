@@ -254,7 +254,7 @@
                     <execution>
                         <phase>package</phase>
                         <goals>
-                            <goal>createk8syaml</goal>
+                            <goal>generate</goal>
                         </goals>
                     </execution>
                 </executions>
