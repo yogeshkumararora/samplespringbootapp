@@ -249,12 +249,12 @@
             <plugin>
                 <groupId>io.github.parj</groupId>
                 <artifactId>createk8syaml-maven-plugin</artifactId>
-                <version>0.0.2</version>
+                <version>0.0.5</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
-                            <goal>createk8syaml</goal>
+                            <goal>generate</goal>
                         </goals>
                     </execution>
                 </executions>
