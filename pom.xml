@@ -4,7 +4,7 @@
     <groupId>io.github.parj</groupId>
     <artifactId>samplespringbootapp</artifactId>
     <packaging>jar</packaging>
-    <version>1.13-SNAPSHOT</version>
+    <version>1.15-SNAPSHOT</version>
     <name>samplespringbootapp</name>
     <url>https://github.com/parj/SampleSpringBootApp</url>
 
@@ -108,14 +108,14 @@
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>6.2.2</version>
+                <version>6.5.1</version>
             </plugin>
 
             <!-- Builds docker image, not bound to any phase and executed manually -->
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>3.1.4</version>
                 <executions>
 					<execution>
 						<phase>package</phase>
