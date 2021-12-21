@@ -10,7 +10,7 @@ public class HelloController {
 
     @RequestMapping("/")
     public RedirectView redirectWithUsingRedirectView(RedirectAttributes attributes) {
-        return new RedirectView("swagger-ui/");
+        return new RedirectView("swagger-ui/index.html");
     }
 
     @RequestMapping("/hello")

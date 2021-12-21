@@ -69,11 +69,10 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- swagger -->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${spring.doc}</version>
         </dependency>
         <!-- Spring boot actuator to expose metrics endpoint -->
         <dependency>
@@ -83,7 +82,7 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>
-            <version>1.7.2</version>
+            <version>1.8.1</version>
         </dependency>
     </dependencies>
 
@@ -95,6 +94,7 @@
         <docker.image>registry.hub.docker.com/parjanya/${project.name}:${project.version}</docker.image>
         <app.port>9999</app.port>
         <jar_file>${project.build.directory}/${project.build.finalName}.jar</jar_file>
+        <spring.doc>1.6.2</spring.doc>
     </properties>
 
     <build>
@@ -192,7 +192,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
+                <version>3.0.1</version>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
