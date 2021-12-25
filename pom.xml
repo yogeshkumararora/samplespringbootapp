@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
     <version>1.17-SNAPSHOT</version>
     <name>samplespringbootapp</name>
-    <url>https://github.com/parj/SampleSpringBootApp</url>
+    <url>https://github.com/parj/samplespringbootapp</url>
 
     <licenses>
         <license>
@@ -32,9 +32,9 @@
     </developers>
 
     <scm>
-        <url>https://github.com/parj/SampleSpringBootApp</url>
-        <connection>scm:git:git@github.com:parj/SampleSpringBootApp.git</connection>
-        <developerConnection>scm:git:git@github.com:parj/SampleSpringBootApp.git</developerConnection>
+        <url>https://github.com/parj/samplespringbootapp</url>
+        <connection>scm:git:git@github.com:parj/samplespringbootapp.git</connection>
+        <developerConnection>scm:git:git@github.com:parj/samplespringbootapp.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -91,7 +91,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <swagger.version>3.0.0</swagger.version>
-        <docker.image>registry.hub.docker.com/parjanya/${project.name}</docker.image>
+        <docker.image>ghcr.io/parj/${project.name}</docker.image>
         <app.port>9999</app.port>
         <jar_file>${project.build.directory}/${project.build.finalName}.jar</jar_file>
         <spring.doc>1.6.2</spring.doc>
