@@ -91,7 +91,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <swagger.version>3.0.0</swagger.version>
-        <docker.image>registry.hub.docker.com/parjanya/${project.name}:${project.version}</docker.image>
+        <docker.image>registry.hub.docker.com/parjanya/${project.name}</docker.image>
         <app.port>9999</app.port>
         <jar_file>${project.build.directory}/${project.build.finalName}.jar</jar_file>
         <spring.doc>1.6.2</spring.doc>
@@ -127,10 +127,13 @@
 				</executions>
                 <configuration>
                     <from>
-                        <image>gcr.io/distroless/java:11</image>
+                        <!-- Skipped distroless due to CVE-2021-33574 -->
+                        <image>gcr.io/distroless/java11</image>
+                        <!--image>azul/zulu-openjdk-alpine:17-jre-headless</image-->
                     </from>
                     <to>
-                        <image>${docker.image}</image>
+                        <image>${docker.image}:${project.version}</image>
+                        <image>${docker.image}:latest</image>
                     </to>
                     <container>
                         <args>
