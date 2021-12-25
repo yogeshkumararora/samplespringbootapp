@@ -31,11 +31,12 @@ jobs:
     - name: Build local container image
       run: |
         mvn \
+        -Dimage=localbuild/samplespringbootapp:latest \
         clean compile jib:dockerBuild
 
     - name: Scan local container image
       uses: anchore/scan-action@v3
       with:
-        image: "registry.hub.docker.com/parjanya/samplespringbootapp:${{ steps.project.outputs.version }}"
+        image: "localbuild/samplespringbootapp:latest"
         fail-build: true
         severity-cutoff: critical
