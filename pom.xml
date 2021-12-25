@@ -128,8 +128,8 @@
                 <configuration>
                     <from>
                         <!-- Skipped distroless due to CVE-2021-33574 -->
-                        <image>gcr.io/distroless/java11</image>
-                        <!--image>azul/zulu-openjdk-alpine:17-jre-headless</image-->
+                        <!--image>gcr.io/distroless/java11</image-->
+                        <image>azul/zulu-openjdk-alpine:17-jre-headless</image>
                     </from>
                     <to>
                         <image>${docker.image}:${project.version}</image>
