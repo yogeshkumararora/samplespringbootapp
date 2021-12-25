@@ -18,7 +18,7 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: '11'
-        
+
     - name: Build local container image
       run: |
         mvn \
@@ -40,4 +40,5 @@ jobs:
         sarif_file: ${{ steps.scan.outputs.sarif }}
 
     - name: Inspect action SARIF report
+      if: always()
       run: cat ${{ steps.scan.outputs.sarif }}
