@@ -6,10 +6,6 @@ on:
     tags-ignore:
       - '*'
 
-branding:
-  icon: 'package'
-  color: 'gray-dark'
-
 jobs:
   build:
     runs-on: ubuntu-latest
