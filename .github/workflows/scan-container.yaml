@@ -18,16 +18,7 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: '11'
-        server-id: ossrh
-        server-username: MAVEN_USERNAME
-        server-password: MAVEN_PASSWORD
-        gpg-private-key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
-        gpg-passphrase: MAVEN_GPG_PASSPHRASE
-
-    - name: Extract Maven project version
-      run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
-      id: project
-
+        
     - name: Build local container image
       run: |
         mvn \
@@ -36,7 +27,17 @@ jobs:
 
     - name: Scan local container image
       uses: anchore/scan-action@v3
+      id: scan
       with:
         image: "localbuild/samplespringbootapp:latest"
         fail-build: true
         severity-cutoff: critical
+        acs-report-enable: true
+
+    - name: upload Anchore scan SARIF report
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: ${{ steps.scan.outputs.sarif }}
+
+    - name: Inspect action SARIF report
+      run: cat ${{ steps.scan.outputs.sarif }}
