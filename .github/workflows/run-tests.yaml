@@ -22,6 +22,13 @@ jobs:
         distribution: 'zulu'
         java-version: '17'
 
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2tests-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2tests
+
     - name: Run tests
       run: |
         mvn \

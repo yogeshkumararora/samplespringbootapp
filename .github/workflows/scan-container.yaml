@@ -25,6 +25,13 @@ jobs:
         distribution: 'zulu'
         java-version: '17'
 
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2-contscan-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2contscan
+
     - name: Build local container image
       run: |
         mvn \

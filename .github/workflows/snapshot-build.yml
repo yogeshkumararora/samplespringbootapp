@@ -7,7 +7,9 @@ on:
       - "Tests - Unit"
     branches-ignore:
       - main
-    types: [completed]
+    types: 
+      - completed
+      - requested
 
 env:
   REGISTRY: ghcr.io

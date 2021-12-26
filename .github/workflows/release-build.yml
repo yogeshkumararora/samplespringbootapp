@@ -26,8 +26,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+          key: ${{ runner.os }}-m2release-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2release
 
       - name: Build and Test
         uses: qcastel/github-actions-maven-cmd@master
