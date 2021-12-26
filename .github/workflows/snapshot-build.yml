@@ -1,30 +1,53 @@
 name: "Build - Snapshot"
-on:
-  workflow_run:
-    workflows: 
-      - "Scan - Container"
-      - "Scan - Code"
-      - "Tests - Unit"
+on: 
+  push:
     branches-ignore:
       - main
-    types: 
-      - completed
-      - requested
+    tags-ignore:
+      - '*'
+  pull_request:
+    branches:
+      - main
+
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+  unit_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2tests-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2tests
+
+    - name: Run tests
+      run: |
+        mvn \
+        clean test
+
   snapshot_build:
     name: Snapshot build and publish
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-      needs: test
 
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    needs: test
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
