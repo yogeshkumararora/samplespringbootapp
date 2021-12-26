@@ -3,6 +3,11 @@ on:
   push:
     branches:
       - main
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -11,11 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up JDK 11
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
-          java-version: '11'
+          distribution: 'zulu'
+          java-version: '17'
 
       - name: Cache local Maven repository
         uses: actions/cache@v2
@@ -46,9 +51,9 @@ jobs:
           gpg-key: ${{ secrets.GPG_KEY }}
           gpg-passphrase: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
           
-          docker-registry-id: registry.hub.docker.com
-          docker-registry-username: ${{ secrets.DOCKER_USERNAME }}
-          docker-registry-password: ${{ secrets.DOCKER_PASSWORD }}
+          docker-registry-id: ${{ env.REGISTRY }}
+          docker-registry-username: ${{ github.actor }}
+          docker-registry-password: ${{ secrets.GITHUB_TOKEN }}
 
           maven-repo-server-id: ossrh
           maven-repo-server-username: ${{ secrets.OSSRH_USERNAME }}

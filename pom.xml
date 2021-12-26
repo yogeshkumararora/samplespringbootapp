@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
     <version>1.17-SNAPSHOT</version>
     <name>samplespringbootapp</name>
-    <url>https://github.com/parj/SampleSpringBootApp</url>
+    <url>https://github.com/parj/samplespringbootapp</url>
 
     <licenses>
         <license>
@@ -32,9 +32,9 @@
     </developers>
 
     <scm>
-        <url>https://github.com/parj/SampleSpringBootApp</url>
-        <connection>scm:git:git@github.com:parj/SampleSpringBootApp.git</connection>
-        <developerConnection>scm:git:git@github.com:parj/SampleSpringBootApp.git</developerConnection>
+        <url>https://github.com/parj/samplespringbootapp</url>
+        <connection>scm:git:git@github.com:parj/samplespringbootapp.git</connection>
+        <developerConnection>scm:git:git@github.com:parj/samplespringbootapp.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -52,7 +52,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.1</version>
+        <version>2.6.2</version>
     </parent>
 
     <dependencies>
@@ -91,7 +91,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <swagger.version>3.0.0</swagger.version>
-        <docker.image>registry.hub.docker.com/parjanya/${project.name}:${project.version}</docker.image>
+        <docker.image>ghcr.io/parj/${project.name}</docker.image>
         <app.port>9999</app.port>
         <jar_file>${project.build.directory}/${project.build.finalName}.jar</jar_file>
         <spring.doc>1.6.2</spring.doc>
@@ -119,7 +119,7 @@
                 <version>3.1.4</version>
                 <executions>
 					<execution>
-						<phase>package</phase>
+						<phase>deploy</phase>
 						<goals>
 							<goal>build</goal>
 						</goals>
@@ -127,10 +127,13 @@
 				</executions>
                 <configuration>
                     <from>
-                        <image>gcr.io/distroless/java:11</image>
+                        <!-- Skipped distroless due to CVE-2021-33574 -->
+                        <!--image>gcr.io/distroless/java11</image-->
+                        <image>azul/zulu-openjdk-alpine:17-jre-headless</image>
                     </from>
                     <to>
-                        <image>${docker.image}</image>
+                        <image>${docker.image}:${project.version}</image>
+                        <image>${docker.image}:latest</image>
                     </to>
                     <container>
                         <args>
@@ -244,26 +247,6 @@
                 <configuration>
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
                     <offline>true</offline>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>io.github.parj</groupId>
-                <artifactId>createk8syaml-maven-plugin</artifactId>
-                <version>0.0.5</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <namespace>app-namespace</namespace>
-                    <image>${docker.image}</image>
-                    <port>${app.port}</port>
-                    <path>/hello</path>
                 </configuration>
             </plugin>
             <plugin>
