@@ -8,6 +8,10 @@ on:
   pull_request:
     branches:
       - main
+
+env:
+  IMAGE_NAME: "localbuild/samplespringbootapp:latest"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,7 +35,7 @@ jobs:
       uses: anchore/scan-action@v3
       id: scan
       with:
-        image: "localbuild/samplespringbootapp:latest"
+        image: ${{ env.IMAGE_NAME }}
         fail-build: true
         severity-cutoff: critical
         acs-report-enable: true
@@ -44,3 +48,23 @@ jobs:
     - name: Inspect action SARIF report
       if: always()
       run: cat ${{ steps.scan.outputs.sarif }}
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      id: aquasec
+      with:
+        image-ref: ${{ env.IMAGE_NAME }}
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+    - name: Inspect action SARIF report
+      if: always()
+      run: cat ${{ steps.aquasec.outputs.sarif }}
