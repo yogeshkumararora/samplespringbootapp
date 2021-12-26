@@ -1,39 +1,19 @@
-name: Snapshot Test and build
+name: "Build - Snapshot"
 on:
   workflow_run:
-    workflows: ["Scan container for CVE", "Code Scanning - Action"]
+    workflows: 
+      - "Scan - Container"
+      - "Scan - Code"
+      - "Tests - Unit"
     branches-ignore:
       - main
-    tags-ignore:
-      - '*'
-    types:
-      - completed
+    types: [completed]
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  test:
-    name: Run unit tests
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'zulu'
-          java-version: '17' 
-      
-      - run: |
-          mvn clean test
-
-
   snapshot_build:
     name: Snapshot build and publish
     runs-on: ubuntu-latest

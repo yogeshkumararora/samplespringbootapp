@@ -6,8 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        distribution: ['adopt']
-        java: [ '8', '11','15' ]
+        distribution: ['zulu']
+        java: [ '8', '11','15', '17' ]
     name: Java ${{ matrix.Java }} (${{ matrix.distribution }})
     steps:
       - uses: actions/checkout@v2
