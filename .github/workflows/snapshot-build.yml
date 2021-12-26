@@ -15,10 +15,12 @@ env:
 
 jobs:
   test:
+    name: Run unit tests
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      steps:
+
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -33,14 +35,15 @@ jobs:
 
 
   snapshot_build:
+    name: Snapshot build and publish
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
       needs: test
 
-      if: ${{ github.event.workflow_run.conclusion == 'success' }}
-      steps:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
