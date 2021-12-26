@@ -46,7 +46,7 @@ jobs:
       contents: read
       packages: write
 
-    needs: test
+    needs: unit_tests
 
     steps:
       - name: Checkout repository
