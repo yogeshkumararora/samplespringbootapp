@@ -6,8 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        distribution: ['adopt']
-        java: [ '8', '11','15' ]
+        distribution: ['zulu']
+        java: [ '8', '11','15', '17' ]
     name: Java ${{ matrix.Java }} (${{ matrix.distribution }})
     steps:
       - uses: actions/checkout@v2
@@ -16,8 +16,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+          key: ${{ runner.os }}-m2pull-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2pull
 
       - name: Setup java
         uses: actions/setup-java@v2

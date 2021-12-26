@@ -1,4 +1,4 @@
-name: Scan container for CVE
+name: "Scan - Container"
 on: 
   push:
     branches-ignore:
@@ -19,11 +19,18 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up JDK 11
+    - name: Set up JDK
       uses: actions/setup-java@v2
       with:
-        distribution: 'adopt'
-        java-version: '11'
+        distribution: 'zulu'
+        java-version: '17'
+
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2-contscan-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2contscan
 
     - name: Build local container image
       run: |
