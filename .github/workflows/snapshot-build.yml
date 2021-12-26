@@ -1,10 +1,13 @@
 name: Snapshot Test and build
-on: 
-  push:
+on:
+  workflow_run:
+    workflows: ["Scan container for CVE", "Code Scanning - Action"]
     branches-ignore:
       - main
     tags-ignore:
       - '*'
+    types:
+      - completed
 
 env:
   REGISTRY: ghcr.io
@@ -15,9 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write
-
-    steps:
+  steps:
     - uses: actions/checkout@v2
 
     - name: Set up JDK
@@ -25,36 +26,71 @@ jobs:
       with:
         distribution: 'zulu'
         java-version: '17'
-        server-id: ossrh
-        server-username: MAVEN_USERNAME
-        server-password: MAVEN_PASSWORD
-        gpg-private-key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
-        gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
-    - name: Log in to the Container registry
-      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Cache local Maven repository
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      steps:
+      - uses: actions/checkout@v2
 
-    - id: publish-to-central-and-docker
-      name: Publish to Central Repository and Docker
-      env:
-        MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-        MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-        MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '17' 
+      
+      - run: |
+          mvn clean test
 
-      run: |
-        mvn \
-          --no-transfer-progress \
-          --batch-mode \
-          -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
-          clean deploy
+
+  snapshot_build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      needs: test
+
+      if: ${{ github.event.workflow_run.conclusion == 'success' }}
+      steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - id: publish-to-central-and-docker
+        name: Publish to Central Repository and Docker
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+
+        run: |
+          mvn \
+            --no-transfer-progress \
+            --batch-mode \
+            -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
+            clean deploy
