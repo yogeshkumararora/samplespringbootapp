@@ -94,8 +94,8 @@
         <docker.image>ghcr.io/parj/${project.name}</docker.image>
         <app.port>9999</app.port>
         <jar_file>${project.build.directory}/${project.build.finalName}.jar</jar_file>
-        <spring.doc>1.6.2</spring.doc>
-        <log4j2.version>2.17.0</log4j2.version>
+        <spring.doc>1.6.3</spring.doc>
+        <log4j2.version>2.17.1</log4j2.version>
     </properties>
 
     <build>
@@ -251,7 +251,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.9.1</version>
+                <version>3.10.0</version>
             </plugin>
 
             <plugin>
