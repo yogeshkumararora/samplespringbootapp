@@ -109,7 +109,7 @@
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>6.5.1</version>
+                <version>6.5.3</version>
             </plugin>
 
             <!-- Builds docker image, not bound to any phase and executed manually -->
