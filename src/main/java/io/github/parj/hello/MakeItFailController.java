@@ -26,7 +26,7 @@ public class MakeItFailController {
         this.eventPublisher = eventPublisher;
     }
 
-    @RequestMapping(value = "/letitgo", method = RequestMethod.POST)
+    @RequestMapping(value = "/letitgo", method = { RequestMethod.POST, RequestMethod.GET } )
     public ResponseEntity<?> failIT() {
         logger.info("Causing a liveness failure");
         AvailabilityChangeEvent.publish(this.eventPublisher, new Exception("Failure test"), LivenessState.BROKEN);

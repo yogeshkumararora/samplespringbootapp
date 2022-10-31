@@ -7,8 +7,6 @@ public class SpringDoc {
     @Bean
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
-                //.group("springshop-public")
-                //.pathsToMatch("/public/**")
                 .build();
     }
 }

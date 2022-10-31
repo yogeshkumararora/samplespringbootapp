@@ -2,6 +2,7 @@ target/
 .vscode/
 .settings/
 .idea/
+.fleet/
 
 .classpath
 .project
