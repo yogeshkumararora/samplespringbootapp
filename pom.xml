@@ -106,7 +106,7 @@
         <docker.image>ghcr.io/parj/${project.name}</docker.image>
         <app.port>9999</app.port>
         <jar_file>${project.build.directory}/${project.build.finalName}.jar</jar_file>
-        <spring.doc>1.6.12</spring.doc>
+        <spring.doc>1.6.14</spring.doc>
         <log4j2.version>2.19.0</log4j2.version>
     </properties>
 
