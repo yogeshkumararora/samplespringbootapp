@@ -1,5 +1,7 @@
-image:
-  name: parjanya/samplespringbootapp
-  tag: "1.16"
+labelName: java
+containerName: java
+metadataName: samlespringbootapp
+imageName: parjanya/samplespringbootapp:1.16
 
-port: 9999
+service:
+  port: 9999
