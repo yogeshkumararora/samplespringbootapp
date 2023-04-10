@@ -1,8 +1,5 @@
 java:
-  labelName: java
-  containerName: java
-  metadataName: springbootapp
-  imageName: parjanya/samplespringbootapp:1.16
-
-  service:
-    port: 9999
+  applicationPort: 9999
+  image: 'parjanya/samplespringbootapp:1.16'
+  ingressHost: thecube.local
+  environment:
