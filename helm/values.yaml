@@ -1,0 +1,7 @@
+labelName: java
+containerName: java
+metadataName: samlespringbootapp
+imageName: parjanya/samplespringbootapp:1.16
+
+service:
+  port: 9999
