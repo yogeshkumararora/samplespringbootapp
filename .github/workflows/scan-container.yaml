@@ -1,5 +1,6 @@
 name: "Scan - Container"
-on: 
+on:
+  workflow_dispatch:
   push:
     branches-ignore:
       - main
